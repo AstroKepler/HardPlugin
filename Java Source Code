@@ -1,0 +1,135 @@
+MAIN JAVA CODE:
+
+
+package com.kepler.hardestproject;
+
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Main extends JavaPlugin {
+	
+	@Override
+	public void onEnable() {
+		
+		getLogger().info("Hardest Plugin has been enabled");
+		
+		PluginManager pm = getServer().getPluginManager();
+		HPListener listener = new HPListener(this);
+		pm.registerEvents(listener, this);
+		
+	}
+	
+	@Override
+	public void onDisable() {
+		
+		getLogger().info("Hardest Plugin has been Disabled");
+		
+	}
+	
+}
+
+
+LISTENER:
+
+
+package com.kepler.hardestproject;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Zombie;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+
+public class HPListener implements Listener{
+	
+	@EventHandler
+	public void onFoodEaten(PlayerItemConsumeEvent event) {
+		
+		if(event.getItem().getType().name().toLowerCase().contains("potion"))
+			return;
+		
+		if(event.getItem().getType().name().toLowerCase().contains("bucket"))
+			return;
+		
+		event.getPlayer().setHealth(0.5);
+		event.getPlayer().setWalkSpeed(0.2f);
+		event.getPlayer().setSaturation(0);
+		
+	}
+	
+	
+	
+	@EventHandler
+	public void creatureSpawn(CreatureSpawnEvent event) {
+		
+		if(event.getEntityType() == EntityType.CREEPER) {
+			
+			Creeper creeper = (Creeper) event.getEntity();
+			
+			creeper.setPowered(true);
+		}
+		
+		if(event.getEntityType() == EntityType.ZOMBIE) {
+			
+			Zombie zombie = (Zombie) event.getEntity();
+			
+			zombie.getEquipment().setHelmet(new ItemStack(Material.NETHERITE_HELMET));
+			zombie.getEquipment().setBoots(new ItemStack(Material.NETHERITE_BOOTS));
+			zombie.getEquipment().setChestplate(new ItemStack(Material.NETHERITE_CHESTPLATE));
+			zombie.getEquipment().setLeggings(new ItemStack(Material.NETHERITE_LEGGINGS));
+			
+			ItemStack EnchantAxe = new ItemStack(Material.NETHERITE_AXE);
+			EnchantAxe.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+			
+			zombie.getEquipment().setItemInMainHand(EnchantAxe);
+			
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30000, 200));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30000, 200));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30000, 10));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30000, 200));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 30000, 200));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30000, 200));	
+			
+		}
+		if(event.getEntityType() == EntityType.SKELETON) {
+			
+			Skeleton skeleton = (Skeleton) event.getEntity();
+			
+			skeleton.getEquipment().setHelmet(new ItemStack(Material.NETHERITE_HELMET));
+			skeleton.getEquipment().setBoots(new ItemStack(Material.NETHERITE_BOOTS));
+			skeleton.getEquipment().setChestplate(new ItemStack(Material.NETHERITE_CHESTPLATE));
+			skeleton.getEquipment().setLeggings(new ItemStack(Material.NETHERITE_LEGGINGS));
+			
+			ItemStack powerBow = new ItemStack(Material.BOW);
+			powerBow.addEnchantment(Enchantment.ARROW_DAMAGE, 5);
+			
+			skeleton.getEquipment().setItemInMainHand(powerBow);
+			
+			skeleton.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30000, 200));
+			skeleton.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30000, 200));
+			skeleton.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30000, 10));
+			skeleton.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30000, 200));
+			skeleton.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 30000, 200));
+			skeleton.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30000, 200));		}
+		
+		
+		
+	}
+	
+	
+	public HPListener(Main plugin) {
+		
+		
+		
+	}
+
+}
